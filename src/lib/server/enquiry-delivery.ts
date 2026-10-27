@@ -9,7 +9,7 @@ export async function deliverEnquiry(data: Enquiry, config: DeliveryConfig, idem
   const text = [
     data.audience === 'creator' ? 'Interesse als creator/model' : 'Interesse als horecazaak',
     `Naam: ${data.name}`, `E-mailadres: ${data.email}`,
-    data.audience === 'creator' ? `Profiel/portfolio: ${data.profile}` : `Horecazaak: ${data.venue}`,
+    data.audience === 'creator' ? `Profiel/portfolio: ${data.profile || '(niet opgegeven)'}` : `Horecazaak: ${data.venue}`,
     `Bericht: ${data.message || '(geen bericht)'}`,
   ].join('\n');
   try {

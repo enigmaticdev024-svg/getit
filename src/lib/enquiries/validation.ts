@@ -4,13 +4,13 @@ export type FieldErrors = Partial<Record<FieldName | '_form', string>>;
 export type Enquiry = { audience: Audience; name: string; email: string; message: string; profile?: string; venue?: string };
 type Field = { name: FieldName; label: string; type: 'text' | 'email' | 'url' | 'textarea'; required: boolean; maxLength: number; autoComplete?: string };
 
-// Proposals from AUDIT.md, not client-approved fields. Finalize only after D01/D02.
+// Remaining field lists are provisional; user confirmed profile/portfolio is optional.
 export function fieldsFor(audience: Audience): Field[] {
   return [
     { name: 'name', label: audience === 'creator' ? 'Naam' : 'Naam contactpersoon', type: 'text', required: true, maxLength: 100, autoComplete: 'name' },
     { name: 'email', label: 'E-mailadres', type: 'email', required: true, maxLength: 254, autoComplete: 'email' },
     audience === 'creator'
-      ? { name: 'profile', label: 'Link naar sociaal profiel of portfolio', type: 'url', required: true, maxLength: 2048, autoComplete: 'url' }
+      ? { name: 'profile', label: 'Link naar sociaal profiel of portfolio', type: 'url', required: false, maxLength: 2048, autoComplete: 'url' }
       : { name: 'venue', label: 'Naam horecazaak', type: 'text', required: true, maxLength: 150, autoComplete: 'organization' },
     { name: 'message', label: 'Bericht', type: 'textarea', required: false, maxLength: 2000 },
   ];

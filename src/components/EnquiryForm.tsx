@@ -9,12 +9,20 @@ export function EnquiryForm({ audience, provisional, sendingEnabled }: { audienc
   const [message, setMessage] = useState('');
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [feedbackVersion, setFeedbackVersion] = useState(0);
   const [ready, setReady] = useState(false);
   const feedbackRef = useRef<HTMLDivElement>(null);
   const requestKey = useRef<string | undefined>(undefined);
 
   useEffect(() => { setReady(true); }, []);
-  useEffect(() => { if (message || success) feedbackRef.current?.focus(); }, [message, errors, success]);
+  // Focus feedback once per submission outcome, never while a visitor edits errors.
+  useEffect(() => { if (feedbackVersion > 0) feedbackRef.current?.focus(); }, [feedbackVersion]);
+
+  function showError(text: string, fieldErrors: FieldErrors = {}) {
+    setErrors(fieldErrors);
+    setMessage(text);
+    setFeedbackVersion(version => version + 1);
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,8 +33,7 @@ export function EnquiryForm({ audience, provisional, sendingEnabled }: { audienc
     setErrors({});
     setMessage('');
     if (!result.ok) {
-      setErrors(result.errors);
-      setMessage('Controleer de aangegeven velden.');
+      showError('Controleer de aangegeven velden.', result.errors);
       return;
     }
     setPending(true);
@@ -41,12 +48,12 @@ export function EnquiryForm({ audience, provisional, sendingEnabled }: { audienc
       const payload = await response.json();
       if (response.ok && payload.ok === true) {
         setSuccess(true);
+        setFeedbackVersion(version => version + 1);
       } else {
-        setErrors(payload.errors && typeof payload.errors === 'object' ? payload.errors : {});
-        setMessage(typeof payload.message === 'string' ? payload.message : 'Versturen is niet gelukt. Probeer opnieuw.');
+        showError(typeof payload.message === 'string' ? payload.message : 'Versturen is niet gelukt. Probeer opnieuw.', payload.errors && typeof payload.errors === 'object' ? payload.errors : {});
       }
     } catch {
-      setMessage('Versturen is niet gelukt. Controleer je verbinding en probeer opnieuw. Je gegevens blijven staan.');
+      showError('Versturen is niet gelukt. Controleer je verbinding en probeer opnieuw. Je gegevens blijven staan.');
     } finally { setPending(false); }
   }
 
