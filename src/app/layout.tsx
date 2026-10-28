@@ -6,7 +6,7 @@ const displayFont = Manrope({ subsets: ['latin'], variable: '--font-manrope', di
 export const metadata: Metadata = {
   metadataBase: new URL('https://wearegetit.com'),
   title: { default: 'GetIt | Mooie plekken. Echte makers. Goede klik.', template: '%s | GetIt' },
-  description: 'GetIt verbindt geselecteerde creators en modellen met bijzondere restaurants, cafés en bars. Een mooie ervaring, in ruil voor content. Binnenkort in Amsterdam.',
+  description: 'GetIt verbindt geselecteerde creators en modellen met bijzondere restaurants, cafés en bars. Voor ervaringen die je wilt delen. En plekken die gezien mogen worden. Binnenkort in Amsterdam.',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website', locale: 'nl_NL', siteName: 'GetIt', url: '/',
@@ -17,7 +17,9 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', title: 'GetIt | Good things. Worth sharing.', description: 'Bijzondere horeca ontmoet geselecteerde makers. Binnenkort in Amsterdam.', images: ['/social/getit.jpg'] },
   // Keep review builds unindexed. Change only during approved production launch.
   robots: { index: false, follow: false },
+  // Keep translation tools from rewriting the DOM before React hydrates it.
+  other: { google: 'notranslate' },
 };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="nl" className={bodyFont.variable + ' ' + displayFont.variable}><body>{children}</body></html>;
+  return <html lang="nl" translate="no" className={'notranslate ' + bodyFont.variable + ' ' + displayFont.variable}><body>{children}</body></html>;
 }

@@ -3,14 +3,16 @@ import { EnquiryForm } from './EnquiryForm';
 import { getEnquiryConfig } from '@/lib/server/enquiry-config';
 import type { Audience } from '@/lib/enquiries/validation';
 
-export function EnquiryPage({ audience }: { audience: Audience }) {
+export function EnquiryPage({ audience, popup = false }: { audience: Audience; popup?: boolean }) {
   const config = getEnquiryConfig();
-  return <main className="wrap enquiry-page"><Brand />
-    <div className="eyebrow">{audience === 'creator' ? 'Voor creators & modellen' : 'Voor restaurants, cafés & bars'}</div>
-    <h1>{audience === 'creator' ? 'Laat je stijl zien.' : 'Laten we kennismaken.'}</h1>
-    <p className="enquiry-intro">{audience === 'creator' ? 'Interesse als creator' : 'Interesse als horecazaak'}</p>
-    <EnquiryForm audience={audience} provisional={!config.formsApproved || !config.privacyUrl} sendingEnabled={config.enabled} />
+  const Container = popup ? 'section' : 'main';
+  const Heading = popup ? 'h2' : 'h1';
+  return <Container className={popup ? 'enquiry-page enquiry-popup-content' : 'wrap enquiry-page'}>{!popup && <Brand />}
+    <div className="eyebrow">{popup ? audience === 'creator' ? 'Voor creators' : 'Voor horecazaken' : audience === 'creator' ? 'Voor creators & modellen' : 'Voor restaurants, cafés & bars'}</div>
+    <Heading>{audience === 'creator' ? 'Goede smaak. Een eigen blik.' : 'Jouw zaak verdient het juiste publiek.'}</Heading>
+    <p className="enquiry-intro">{audience === 'creator' ? 'Ontdek bijzondere horeca en maak content op jouw manier. Laat je profiel achter; we bekijken of jouw stijl bij GetIt past.' : 'Benieuwd hoe creators jouw restaurant, café of bar in beeld kunnen brengen? Vertel ons over je zaak. We nemen persoonlijk contact op om te bespreken wat past.'}</p>
+    <EnquiryForm audience={audience} provisional={!config.formsApproved || !config.privacyUrl} sendingEnabled={config.enabled} popup={popup} />
     {config.privacyUrl && <p className="form-privacy"><a href={config.privacyUrl}>Privacyinformatie</a></p>}
-    <a className="textlink" href="/#meedoen">Terug naar GetIt <span aria-hidden="true">↗</span></a>
-  </main>;
+    {!popup && <a className="textlink" href="/#meedoen">Terug naar GetIt <span aria-hidden="true">↗</span></a>}
+  </Container>;
 }

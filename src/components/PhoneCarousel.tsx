@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 
-const captions = ['Ontdek jouw plek', 'Bekijk de afspraken', 'Volg de volgende stap'];
+const captions = ['De ervaring', 'De ontmoeting', 'Het verhaal'];
 
 // Only presentation state: the phone contents remain static, fictional examples.
 export function PhoneCarousel({ children }: { children: ReactNode }) {
@@ -100,12 +100,10 @@ export function PhoneCarousel({ children }: { children: ReactNode }) {
         {children}
       </div>
       <div className="swipe-controls">
-        <button type="button" aria-label="Vorig appvoorbeeld" aria-controls="phone-track" aria-disabled={selected === 0} onClick={() => select(selectedRef.current - 1)}><span aria-hidden="true">←</span></button>
-        <div className="carousel-context">
-          <span aria-hidden="true">Swipe om te ontdekken</span>
-          <p className="carousel-status" role="status" aria-live="polite" aria-atomic="true">{selected + 1} van {captions.length} · {captions[selected]}</p>
-        </div>
-        <button type="button" aria-label="Volgend appvoorbeeld" aria-controls="phone-track" aria-disabled={selected === captions.length - 1} onClick={() => select(selectedRef.current + 1)}><span aria-hidden="true">→</span></button>
+        <button type="button" aria-label="Vorig appvoorbeeld" aria-controls="phone-track" aria-disabled={selected === 0} onClick={() => select(selectedRef.current - 1)}>←</button>
+        <span aria-hidden="true">Swipe of tik om te ontdekken</span>
+        <p className="carousel-status sr-only" role="status" aria-live="polite" aria-atomic="true">{selected + 1} van {captions.length} · {captions[selected]}</p>
+        <button type="button" aria-label="Volgend appvoorbeeld" aria-controls="phone-track" aria-disabled={selected === captions.length - 1} onClick={() => select(selectedRef.current + 1)}>→</button>
       </div>
     </>
   );

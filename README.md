@@ -55,3 +55,21 @@ See ../implementation-plan/PROGRESS.md for actual checks and stage status. Insta
 ## Local enquiry checks
 
 From the repository root: `node implementation-plan/checks/stage05-server.mjs` runs synthetic handler/provider tests without contacting Resend. After building and starting the app on port 3100, `node implementation-plan/checks/stage05-review.mjs` uses installed headless Chrome for provisional form/disabled API and intercepted-response browser tests. It never verifies real delivery. Stage 05 remains partial until client confirmations are recorded.
+
+## Email plan decision
+
+Client selected Resend transactional Free on 27 October 2026 (100 emails/day, 3000/month shared account quota at verification). The same server adapter supports this plan; no paid SDK/subscription required by the code. No upgrade, trial, overage or add-on authorized. Account/sender verification, actual configuration and receipt tests remain pending.
+
+## 28 October update
+
+The active marketing reference is now ../GetIt-website-Tulio-definitief-27okt/website/index.html. Copy, friends photograph, lifestyle content example, three phones and React demonstration dialogs follow that package. Existing server delivery and mobile accessibility behavior are preserved. MarketingDemos.tsx and DemoViews.tsx implement only fictional presentation states, not app or booking functionality.
+
+Ivan confirmed ivanspeakz@gmail.com for current communication and both enquiry notifications; .env.example records it. Real sending remains disabled pending verified Resend/domain access and final privacy/configuration. The desired info@wearegetit.com mailbox is not active or published. No paid services activated. Detailed plan and outstanding setup: ../implementation-plan/OCTOBER-27-UPDATE.md.
+
+Local regression: node implementation-plan/checks/oct27-review.mjs from the project root, against a production server on 127.0.0.1:3100. Screenshots and results are in implementation-plan/evidence/oct27. Existing stage05-server.mjs and stage05-review.mjs cover synthetic delivery/form states; they do not establish real delivery.
+
+Verification limitation for this revision: Chrome DevTools timed out before browser checks completed. No passing screenshots or interaction report is available yet; rerun the oct27 harness when the browser environment works. HTTP/build/server checks passed; see ../implementation-plan/evidence/oct27/local-checks.json.
+
+Enquiry popup correction: EnquiryPopups.tsx opens creator/horeca forms on the homepage; EnquiryPage supports embedded content. Direct routes remain fallback destinations. Production build/TypeScript and 16 synthetic server checks pass; browser interaction verification remains pending.
+
+Full reference alignment: globals.css now preserves the complete supplied 27 October stylesheet in order, followed by scoped production form/accessibility integration. Run node implementation-plan/checks/reference-parity.mjs from the project root with the built app on port 3100. The harness serves the original reference on port 3101 using the same fonts, compares five page widths, both enquiries and all example dialogs/post/story states, and saves paired screenshots/results under implementation-plan/evidence/reference-parity. This working browser comparison supersedes earlier timeout limitations.

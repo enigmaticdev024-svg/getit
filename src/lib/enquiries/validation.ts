@@ -12,7 +12,7 @@ export function fieldsFor(audience: Audience): Field[] {
     audience === 'creator'
       ? { name: 'profile', label: 'Link naar sociaal profiel of portfolio', type: 'url', required: false, maxLength: 2048, autoComplete: 'url' }
       : { name: 'venue', label: 'Naam horecazaak', type: 'text', required: true, maxLength: 150, autoComplete: 'organization' },
-    { name: 'message', label: 'Bericht', type: 'textarea', required: false, maxLength: 2000 },
+    { name: 'message', label: audience === 'creator' ? 'Vertel iets over jezelf' : 'Wat zou je voor jouw zaak willen bereiken?', type: 'textarea', required: false, maxLength: 2000 },
   ];
 }
 

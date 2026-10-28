@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { fieldsFor, validateEnquiry, type Audience, type FieldErrors, type FieldName } from '@/lib/enquiries/validation';
 
-export function EnquiryForm({ audience, provisional, sendingEnabled }: { audience: Audience; provisional: boolean; sendingEnabled: boolean }) {
+export function EnquiryForm({ audience, provisional, sendingEnabled, popup = false }: { audience: Audience; provisional: boolean; sendingEnabled: boolean; popup?: boolean }) {
   const fields = fieldsFor(audience);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [message, setMessage] = useState('');
@@ -57,17 +57,17 @@ export function EnquiryForm({ audience, provisional, sendingEnabled }: { audienc
     } finally { setPending(false); }
   }
 
-  if (success) return <div className="form-feedback form-success" ref={feedbackRef} tabIndex={-1} role="status"><h2>Bedankt voor je interesse.</h2><p>Je bericht is verstuurd naar GetIt.</p></div>;
+  if (success) return <div className="form-feedback form-success" ref={feedbackRef} tabIndex={-1} role="status"><h2>Bedankt voor je interesse.</h2><p>{audience === 'creator' ? 'We bekijken je aanmelding en laten je weten wat de volgende stap is.' : 'We nemen contact met je op om de mogelijkheden voor jouw zaak te bespreken.'}</p></div>;
 
   return (
     <>
-      <div className="form-notice" id="enquiry-notice">
+      {!popup && <div className="form-notice" id="enquiry-notice">
         {provisional
           ? 'Voorlopig formulier voor lokale beoordeling. De velden en privacyinformatie zijn nog niet bevestigd. Er wordt niets verstuurd. Gebruik alleen voorbeeldgegevens.'
           : !sendingEnabled ? 'Versturen is nog niet beschikbaar. Gebruik deze lokale versie alleen met voorbeeldgegevens.' : 'Velden met een * zijn verplicht.'}
-      </div>
+      </div>}
       <noscript><p>Schakel JavaScript in om dit formulier te gebruiken.</p></noscript>
-      <form method="post" action="/api/enquiries" noValidate onSubmit={submit} aria-describedby="enquiry-notice" aria-busy={pending} onChange={event => {
+      <form className={popup ? 'interest-form' : undefined} method="post" action="/api/enquiries" noValidate onSubmit={submit} aria-describedby="enquiry-notice" aria-busy={pending} onChange={event => {
         requestKey.current = undefined;
         const target = event.target;
         if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
@@ -80,16 +80,17 @@ export function EnquiryForm({ audience, provisional, sendingEnabled }: { audienc
           {fields.map(field => {
             const id = `enquiry-${field.name}`;
             return <div className="form-field" key={field.name}>
-              <label htmlFor={id}>{field.label}{field.required ? <span aria-hidden="true"> *</span> : ' (optioneel)'}</label>
+              <label htmlFor={id}>{field.label}{popup ? field.type === 'textarea' ? ' (optioneel)' : '' : field.required ? <span aria-hidden="true"> *</span> : ' (optioneel)'}</label>
               {field.type === 'textarea'
-                ? <textarea id={id} name={field.name} rows={5} maxLength={field.maxLength} aria-invalid={!!errors[field.name]} aria-describedby={errors[field.name] ? `${id}-error` : undefined} />
+                ? <textarea id={id} name={field.name} rows={popup ? 3 : 5} maxLength={field.maxLength} aria-invalid={!!errors[field.name]} aria-describedby={errors[field.name] ? `${id}-error` : undefined} />
                 : <input id={id} name={field.name} type={field.type} required={field.required} maxLength={field.maxLength} autoComplete={field.autoComplete} autoCapitalize={field.type === 'email' || field.type === 'url' ? 'none' : undefined} spellCheck={field.type === 'email' || field.type === 'url' ? false : undefined} aria-invalid={!!errors[field.name]} aria-describedby={errors[field.name] ? `${id}-error` : undefined} />}
               {errors[field.name] && <p className="field-error" id={`${id}-error`}>{errors[field.name]}</p>}
             </div>;
           })}
           <div className="form-honeypot" aria-hidden="true"><label htmlFor="fax-number">Laat dit veld leeg</label><input id="fax-number" name="faxNumber" tabIndex={-1} autoComplete="off" /></div>
-          <button className="btn" type="submit" disabled={!ready || pending}>{pending ? 'Even geduld…' : sendingEnabled ? 'Verstuur interesse' : 'Controleer voorbeeldgegevens'}</button>
+          <button className="btn" type="submit" disabled={!ready || pending}>{pending ? 'Even geduld…' : sendingEnabled || popup ? audience === 'creator' ? 'Laat je stijl zien' : 'Laten we kennismaken' : 'Controleer voorbeeldgegevens'}</button>
         </fieldset>
+        {popup && <p className="fine" id="enquiry-notice">{sendingEnabled ? 'Je gegevens worden gebruikt om je interesse te beoordelen en contact met je op te nemen.' : 'Ontwerpvoorbeeld. Gebruik voorbeeldgegevens; er wordt niets verstuurd of opgeslagen.'}</p>}
         <p className="form-pending" role="status" aria-live="polite">{pending ? 'Je formulier wordt verwerkt. Sluit deze pagina nog niet.' : ''}</p>
       </form>
     </>
