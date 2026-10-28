@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { Brand } from './Brand';
+import { getEnquiryConfig } from '@/lib/server/enquiry-config';
 
 export function Header() { return (<header className="topbar"><nav className="wrap" aria-label="Hoofdnavigatie"><Brand /><div className="navlinks"><a href="#creators">Voor creators</a><a href="#venues">Voor venues</a><a href="#hoe">Zo werkt het</a><a className="btn small" href="#meedoen">Laat je interesse weten <span className="arrow">↗</span></a></div></nav></header>); }
 
@@ -19,4 +20,4 @@ export function FAQ() { return (<section className="faq wrap"><div><div classNam
 
 export function FinalCTA() { return (<section className="join" id="meedoen"><div className="wrap"><div><div className="eyebrow">Binnenkort in Amsterdam</div><h2>Maak de<br />eerste klik.</h2><p>Voor plekken die gezien mogen worden. En makers die er een verhaal in zien.</p></div><div><div className="join-actions"><button type="button" className="join-choice" data-enquiry="creator"><span><b>Interesse als creator</b></span><span className="arrow">↗</span></button><button type="button" className="join-choice" data-enquiry="horeca"><span><b>Interesse als horecazaak</b></span><span className="arrow">↗</span></button></div><p className="join-note">Amsterdam · februari 2027. Aanmelden is straks vrijblijvend. Deelname na selectie.</p></div></div></section>); }
 
-export function Footer() { return (<footer className="wrap"><div className="footer-top"><Brand /><span className="tagline">Good things. Worth sharing.</span></div><div className="footer-bottom"><span>© 2026 GetIt</span><span>Sfeerbeelden · geen bevestigde deelnemers</span></div></footer>); }
+export function Footer() { const privacyUrl = getEnquiryConfig().privacyUrl || '/privacy'; return (<footer className="wrap"><div className="footer-top"><Brand /><span className="tagline">Good things. Worth sharing.</span></div><div className="footer-bottom"><span>© 2026 GetIt</span><span>Sfeerbeelden · geen bevestigde deelnemers</span><div className="footer-links"><a href="/contact">Contact</a><a href={privacyUrl}>Privacy</a></div></div></footer>); }

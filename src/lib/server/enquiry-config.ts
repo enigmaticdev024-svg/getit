@@ -8,7 +8,10 @@ export function getEnquiryConfig(): DeliveryConfig {
   let origin = '';
   try {
     const url = new URL(process.env.ENQUIRY_PRIVACY_URL ?? '');
-    if (url.protocol === 'https:' && !url.username && !url.password) privacyUrl = url.href;
+    const pendingLocalPolicy = ['wearegetit.com', 'www.wearegetit.com', 'wearegetit.nl', 'www.wearegetit.nl'].includes(url.hostname)
+      && url.pathname.replace(/\/$/, '') === '/privacy';
+    // /privacy is currently an honest pending-policy page, not an approved policy.
+    if (url.protocol === 'https:' && !url.username && !url.password && !pendingLocalPolicy) privacyUrl = url.href;
   } catch { /* Unconfirmed legal links stay absent. */ }
   try {
     const url = new URL(process.env.ENQUIRY_SITE_ORIGIN ?? '');

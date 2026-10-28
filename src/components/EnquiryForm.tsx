@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { fieldsFor, validateEnquiry, type Audience, type FieldErrors, type FieldName } from '@/lib/enquiries/validation';
 
-export function EnquiryForm({ audience, provisional, sendingEnabled, popup = false }: { audience: Audience; provisional: boolean; sendingEnabled: boolean; popup?: boolean }) {
+export function EnquiryForm({ audience, sendingEnabled, privacyUrl, popup = false }: { audience: Audience; sendingEnabled: boolean; privacyUrl: string; popup?: boolean }) {
   const fields = fieldsFor(audience);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [message, setMessage] = useState('');
@@ -61,11 +61,7 @@ export function EnquiryForm({ audience, provisional, sendingEnabled, popup = fal
 
   return (
     <>
-      {!popup && <div className="form-notice" id="enquiry-notice">
-        {provisional
-          ? 'Voorlopig formulier voor lokale beoordeling. De velden en privacyinformatie zijn nog niet bevestigd. Er wordt niets verstuurd. Gebruik alleen voorbeeldgegevens.'
-          : !sendingEnabled ? 'Versturen is nog niet beschikbaar. Gebruik deze lokale versie alleen met voorbeeldgegevens.' : 'Velden met een * zijn verplicht.'}
-      </div>}
+      {!sendingEnabled && <p className="form-availability" role="status">Versturen is tijdelijk niet beschikbaar. Neem voor vragen contact op via <a href="mailto:ivanspeakz@gmail.com">ivanspeakz@gmail.com</a>.</p>}
       <noscript><p>Schakel JavaScript in om dit formulier te gebruiken.</p></noscript>
       <form className={popup ? 'interest-form' : undefined} method="post" action="/api/enquiries" noValidate onSubmit={submit} aria-describedby="enquiry-notice" aria-busy={pending} onChange={event => {
         requestKey.current = undefined;
@@ -88,9 +84,9 @@ export function EnquiryForm({ audience, provisional, sendingEnabled, popup = fal
             </div>;
           })}
           <div className="form-honeypot" aria-hidden="true"><label htmlFor="fax-number">Laat dit veld leeg</label><input id="fax-number" name="faxNumber" tabIndex={-1} autoComplete="off" /></div>
-          <button className="btn" type="submit" disabled={!ready || pending}>{pending ? 'Even geduld…' : sendingEnabled || popup ? audience === 'creator' ? 'Laat je stijl zien' : 'Laten we kennismaken' : 'Controleer voorbeeldgegevens'}</button>
+          <button className="btn" type="submit" disabled={!ready || pending}>{pending ? 'Even geduld…' : audience === 'creator' ? 'Laat je stijl zien' : 'Laten we kennismaken'}</button>
         </fieldset>
-        {popup && <p className="fine" id="enquiry-notice">{sendingEnabled ? 'Je gegevens worden gebruikt om je interesse te beoordelen en contact met je op te nemen.' : 'Ontwerpvoorbeeld. Gebruik voorbeeldgegevens; er wordt niets verstuurd of opgeslagen.'}</p>}
+        <p className="form-privacy fine" id="enquiry-notice">We gebruiken je gegevens om je interesse te beoordelen en contact met je op te nemen. Lees onze <a href={privacyUrl} target={popup ? '_blank' : undefined} rel={popup ? 'noopener noreferrer' : undefined}>privacyinformatie{popup && <span className="sr-only"> (opent in een nieuw tabblad)</span>}</a>.</p>
         <p className="form-pending" role="status" aria-live="polite">{pending ? 'Je formulier wordt verwerkt. Sluit deze pagina nog niet.' : ''}</p>
       </form>
     </>
