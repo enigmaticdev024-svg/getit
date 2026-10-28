@@ -468,29 +468,7 @@ dialog>.close{position:sticky;top:0;z-index:2}
 .enquiry-popup-content .fine { font-size: 12px; line-height: 1.6; opacity: .8; }
 @media (max-width: 650px) { .enquiry-dialog { padding: 26px; } }
 
-/* Ivan's finishing feedback: the review journey remains visible in the third phone. */
-.journey-device .device-brand { margin-bottom: 12px; }
-.journey-device h3 { font-size: 22px; margin-bottom: 12px; }
-.journey-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 10px; line-height: 1.4; }
-.journey-heading > span { font-size: 9px; white-space: nowrap; }
-.collaboration-progress progress { display: block; width: 100%; height: 5px; margin: 9px 0 14px; border: 0; border-radius: 5px; overflow: hidden; background: var(--sage); accent-color: var(--green); }
-.collaboration-progress progress::-webkit-progress-bar { background: var(--sage); border-radius: 5px; }
-.collaboration-progress progress::-webkit-progress-value { background: var(--green); border-radius: 5px; }
-.collaboration-progress progress::-moz-progress-bar { background: var(--green); border-radius: 5px; }
-.journey-stages { list-style: none; margin: 0; padding: 0; }
-.journey-stages li { position: relative; display: grid; grid-template-columns: 21px 1fr; gap: 9px; padding-bottom: 10px; line-height: 1.25; }
-.journey-stages li:not(:last-child)::before { content: ''; position: absolute; left: 10px; top: 21px; bottom: 0; width: 1px; background: var(--sage); }
-.journey-marker { display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid var(--sage); border-radius: 50%; font-size: 9px; background: #faf7f0; }
-.journey-stages .done .journey-marker { background: var(--green); border-color: var(--green); color: var(--ivory); }
-.journey-stages .current .journey-marker { background: var(--yellow); border-color: var(--green); }
-.journey-stages strong { display: block; font-size: 10px; font-weight: 600; }
-.device .journey-stages small { font-size: 9px; line-height: 1.35; margin-top: 2px; }
-.journey-device .mini-action { margin-top: 3px; }
-.match-device .device-brand { margin-bottom: 16px; }
-.match-device h3 { margin-bottom: 12px; }
-.match-device .mini-status { margin-top: 12px; padding: 12px 10px; }
-.match-device .mini-box { margin-top: 9px; padding: 10px; }
-.match-device .mini-action { margin-top: 8px; }
+/* Contact, privacy and enquiry refinements. */
 .footer-links { display: flex; gap: 20px; }
 .footer-links a { text-underline-offset: 3px; }
 .footer-bottom { flex-wrap: wrap; }
@@ -502,13 +480,3 @@ dialog>.close{position:sticky;top:0;z-index:2}
 .form-availability { font-size: 13px; margin-top: 22px; }
 .form-availability a, .form-privacy a { text-underline-offset: 3px; overflow-wrap: anywhere; }
 .enquiry-popup-content .form-privacy { margin-top: 0; }
-@media (max-width: 950px) and (min-width: 651px) {
-  .phone-track { gap: 20px; }
-  .device { padding-inline: 10px; }
-  .device h3 { margin-bottom: 12px; }
-  .phone-slide:first-child .device > img { height: 120px; }
-  .mini-chips { flex-wrap: wrap; }
-  .journey-stages li { gap: 6px; padding-bottom: 8px; }
-  .journey-heading { flex-wrap: wrap; gap: 2px; }
-  .journey-device h3 { font-size: 20px; }
-}
